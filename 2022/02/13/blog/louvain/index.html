@@ -22,7 +22,7 @@
 <meta name="keywords" content="" />
 
 
-<meta name="description" content="" />
+<meta name="description" content="简介&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Louvain算法[1]是一种基于多层次优化Modularity[2]的算法，它的优点是快速、准确，被[3]认..." />
 
 
 <meta name="robots" content="all" />
@@ -33,7 +33,7 @@
 
 <title>
     
-    分类: Linux |
+    【Blog】louvain |
     
     代码大全
 </title>
@@ -149,95 +149,118 @@ var _hmt = _hmt || [];
     <section class="content-wrap">
         <div class="container">
             <div class="row">
-                <main class="col-md-8 main-content ">
-                    <ol class="breadcrumb">
-    
-    <li>
-        Linux
-    </li>
-    
-</ol>
-
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
 <article class="post">
+    <div class="post-head">
+        <h1 id="【Blog】louvain">
+            
+            【Blog】louvain
+            
+        </h1>
+        <div class="post-meta">
     
-    <div class="post-content">
-        <div class="post-head home-post-head">
-            <h1 class="post-title">
-                <a href="/2022/02/10/linux/shell/">
-                    Shell</a>
-            </h1>
-            <div class="post-meta"> &bull;
-                <time class="post-date" datetime="" title="">
-                    2022年02月10日
-                </time>
-            </div>
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">博客</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2022/02/13</span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Louvain算法[1]是一种基于多层次优化Modularity[2]的算法，它的优点是快速、准确，被[3]认为是性能最好的社区发现算法之一。</p>
+<span id="more"></span>
+
+<p>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Modularity函数最初被用于衡量社区发现算法结果的质量，它能够刻画发现的社区的紧密程度。那么既然能刻画社区的紧密程度，也就能够被用来当作一个优化函数，即将结点加入它的某个邻居所在的社区中，如果能够提升当前社区结构的modularity。</br></p>
+<p>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Modularity的定义如下：<br><img src="http://upload-images.jianshu.io/upload_images/281180-991f97db21e2adaa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>其中，m表示网络中边的数量，A为邻接矩阵，如果ci,cj相同则$\delta(ci,cj)$＝1否则为0。</br></p>
+<p>如果当前结点所在的社区只有它自己，那么在计算将它加入到其它社区时的modularity的变化有个技巧来加速计算，Louvain的高效性也在一定程度上受益于此，它为:<br><img src="http://upload-images.jianshu.io/upload_images/281180-53e40900b4271d70.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></br></p>
+<p>Louvain算法包括两个阶段，在步骤一它不断地遍历网络中的结点，尝试将单个结点加入能够使modularity提升最大的社区中，直到所有结点都不再变化。在步骤二，它处理第一阶段的结果，将一个个小的社区归并为一个超结点来重新构造网络，这时边的权重为两个结点内所有原始结点的边权重之和。迭代这两个步骤直至算法稳定。它的执行流程如图所示：<br><img src="http://upload-images.jianshu.io/upload_images/281180-dd94f1b77fac347e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></br></p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>GraphX是Spark上的一个图处理框架，它在RDD的基础之上封装出VertexRDD以及EdgeRDD，由这两个封装出的RDD便可构成图结构，详细请见官网：<a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/graphx-programming-guide.html"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/zzz24512653/CommunityDetection/tree/master/algorithm/graphx/Louvain">GraphX实现</a><br><a target="_blank" rel="noopener" href="https://github.com/zzz24512653/CommunityDetection/tree/master/algorithm/graphx/Louvain/src/main/scala">Python实现参见</a></p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>[1]. Fast unfolding of communities in large networks<br>[2]. Finding community structure in very large networks<br>[3]. Community detection algorithms: A comparative analysis</p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
         </div>
-        <p class="brief">
+        <div>
             
-            Shell是用户使用Linux的桥梁…
-            
-        </p>
+        </div>
     </div>
 </article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2022/02/13/job/AI-Lab/" class="pre-post btn btn-default" title='【内推】AILab'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            【内推】AILab</span>
+    </a>
+    
+    
+    <a href="/2022/02/13/python/file/" class="next-post btn btn-default" title='file'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            file</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
 
+<div id="comments">
+    
+    
+<div class="utteranc">
+  
+  <script
+    src='https://utteranc.es/client.js'
+    repo='shenliyang/snippet-comment'
+    issue-term='pathname'
+    issue-number=''
+    theme='github-light'
+    label=''
+    crossorigin='anonymous'
+    async
+  ></script>
+</div>
+
+
+
+</div>
 
                 </main>
                 
-                    
-<aside class="col-md-4 sidebar">
-    
-    
-    
-    
-<div class="widget">
-    <h3 class="title">
-        网站公告
-    </h3>
-    <div class="notification">
-        <p>
-    有些代码并不需要记忆也没有记忆的价值(占内存)，本网站希望收录各种场景的函数能够让大家可以快速地复制粘贴；勘误、反馈以及贡献代码可发送邮件至1034789673@qq.com。
-</p>
-    </div>
-</div>
-
-    
-    
-    
-    
-<div class="widget">
-    <h3 class="title">
-        分类
-    </h3>
-    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/"><i class="fa" aria-hidden="true">Linux</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/"><i class="fa" aria-hidden="true">Python</i></a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/"><i class="fa" aria-hidden="true">其它</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E6%8E%A8/"><i class="fa" aria-hidden="true">内推</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2/"><i class="fa" aria-hidden="true">博客</i></a><span class="category-list-count">1</span></li></ul>
-</div>
-
-    
-    
-<div class="widget">
-    <h3 class="title">
-        归档
-    </h3>
-    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/"><i class="fa" aria-hidden="true">2022年02月</i></a><span class="archive-list-count">7</span></li></ul>
-</div>
-
-    
-    
-<div class="widget">
-    <h3 class="title">
-        标签云
-    </h3>
-    <div class="content tag-cloud">
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
         
-        <a href="/tags/Hive/" style="font-size: 10px;">Hive</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">代码实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol>
         
     </div>
-</div>
-
-    
-    
-    
 </aside>
-
                 
             </div>
         </div>

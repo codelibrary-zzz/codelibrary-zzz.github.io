@@ -19,10 +19,10 @@
     <link rel="dns-prefetch" href="http://example.com">
     <!--SEO-->
 
-<meta name="keywords" content="" />
+<meta name="keywords" content="LeetCode" />
 
 
-<meta name="description" content="" />
+<meta name="description" content="题目Reverse digits of an integer.Example1: x &#x3D; 123, return 321Example2: x &#x3D; -123, return ..." />
 
 
 <meta name="robots" content="all" />
@@ -33,7 +33,7 @@
 
 <title>
     
-    分类: 其它 |
+    【LeetCode 7】Reverse Integer |
     
     代码大全
 </title>
@@ -149,95 +149,118 @@ var _hmt = _hmt || [];
     <section class="content-wrap">
         <div class="container">
             <div class="row">
-                <main class="col-md-8 main-content ">
-                    <ol class="breadcrumb">
-    
-    <li>
-        其它
-    </li>
-    
-</ol>
-
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
 <article class="post">
+    <div class="post-head">
+        <h1 id="【LeetCode 7】Reverse Integer">
+            
+            【LeetCode 7】Reverse Integer
+            
+        </h1>
+        <div class="post-meta">
     
-    <div class="post-content">
-        <div class="post-head home-post-head">
-            <h1 class="post-title">
-                <a href="/2022/02/09/other/hive/">
-                    Hive常用函数</a>
-            </h1>
-            <div class="post-meta"> &bull;
-                <time class="post-date" datetime="" title="">
-                    2022年02月09日
-                </time>
-            </div>
-        </div>
-        <p class="brief">
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
             
-            介绍一些常用的hive函数，比如时间函数、集合相关的函数、字符串相关的函数等等，熟练掌握之后对提高数据分析效率有比较大的提升!…
+            <a class="tag-none-link" href="/tags/LeetCode/" rel="tag">LeetCode</a>
             
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2021/02/02</span>
+    </span>
+    
+    
+</div>
+        
+        
+        <p class="fa fa-exclamation-triangle warning">
+            本文于<strong>
+                377</strong>
+            天之前发表，文中内容可能已经过时。
         </p>
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Reverse digits of an integer.<br>Example1: x &#x3D; 123, return 321<br>Example2: x &#x3D; -123, return -321</p>
+<span id="more"></span>
+
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public <span class="built_in">int</span> reverse(<span class="built_in">int</span> x) &#123;</span><br><span class="line">    long <span class="built_in">sum</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">sum</span> = <span class="built_in">sum</span>*<span class="number">10</span> + x%<span class="number">10</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">sum</span>&gt;Integer.MAX_VALUE || <span class="built_in">sum</span>&lt;Integer.MIN_VALUE)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        x /= <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (<span class="built_in">int</span>)<span class="built_in">sum</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+        </div>
+        <div>
+            
+        </div>
     </div>
 </article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2022/02/03/python/collections/" class="pre-post btn btn-default" title='Python集合操作'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Python集合操作</span>
+    </a>
+    
+    
+    <a href="/2021/02/01/leetcode/142/" class="next-post btn btn-default" title='【LeetCode 142】Linked List Cycle II'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            【LeetCode 142】Linked List Cycle II</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
 
+<div id="comments">
+    
+    
+<div class="utteranc">
+  
+  <script
+    src='https://utteranc.es/client.js'
+    repo='shenliyang/snippet-comment'
+    issue-term='pathname'
+    issue-number=''
+    theme='github-light'
+    label=''
+    crossorigin='anonymous'
+    async
+  ></script>
+</div>
+
+
+
+</div>
 
                 </main>
                 
-                    
-<aside class="col-md-4 sidebar">
-    
-    
-    
-    
-<div class="widget">
-    <h3 class="title">
-        网站公告
-    </h3>
-    <div class="notification">
-        <p>
-    有些代码并不需要记忆也没有记忆的价值(占内存)，本网站希望收录各种场景的函数能够让大家可以快速地复制粘贴；勘误、反馈以及贡献代码可发送邮件至1034789673@qq.com。
-</p>
-    </div>
-</div>
-
-    
-    
-    
-    
-<div class="widget">
-    <h3 class="title">
-        分类
-    </h3>
-    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/"><i class="fa" aria-hidden="true">Linux</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/"><i class="fa" aria-hidden="true">Python</i></a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/"><i class="fa" aria-hidden="true">其它</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E6%8E%A8/"><i class="fa" aria-hidden="true">内推</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2/"><i class="fa" aria-hidden="true">博客</i></a><span class="category-list-count">1</span></li></ul>
-</div>
-
-    
-    
-<div class="widget">
-    <h3 class="title">
-        归档
-    </h3>
-    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/"><i class="fa" aria-hidden="true">2022年02月</i></a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/"><i class="fa" aria-hidden="true">2021年02月</i></a><span class="archive-list-count">3</span></li></ul>
-</div>
-
-    
-    
-<div class="widget">
-    <h3 class="title">
-        标签云
-    </h3>
-    <div class="content tag-cloud">
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
         
-        <a href="/tags/Hive/" style="font-size: 10px;">Hive</a> <a href="/tags/LeetCode/" style="font-size: 20px;">LeetCode</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE"><span class="toc-text">题目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li></ol>
         
     </div>
-</div>
-
-    
-    
-    
 </aside>
-
                 
             </div>
         </div>

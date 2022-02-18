@@ -19,11 +19,14 @@
     <link rel="dns-prefetch" href="http://example.com">
     <!--SEO-->
 
-<meta name="keywords" content="LeetCode" />
+<meta name="keywords" content="Leetcode" />
 
 
-<meta name="description" content="题目描述Given an encoded string, return it’s decoded string.
-The encoding rule is: k[encoded_string],..." />
+<meta name="description" content="难度: 中等(Medium)
+
+
+题目描述Given an encoded string, return it’s decoded string.
+The encoding rule is: k..." />
 
 
 <meta name="robots" content="all" />
@@ -34,7 +37,7 @@ The encoding rule is: k[encoded_string],..." />
 
 <title>
     
-    【LeetCode 394】Decode String |
+    【Leetcode 394】Decode String |
     
     代码大全
 </title>
@@ -154,16 +157,16 @@ var _hmt = _hmt || [];
                     <p id="process"></p>
 <article class="post">
     <div class="post-head">
-        <h1 id="【LeetCode 394】Decode String">
+        <h1 id="【Leetcode 394】Decode String">
             
-            【LeetCode 394】Decode String
+            【Leetcode 394】Decode String
             
         </h1>
         <div class="post-meta">
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        
+        <a class="category-link" href="/categories/Leetcode/">Leetcode</a>
     </span>
     
     
@@ -171,7 +174,7 @@ var _hmt = _hmt || [];
         <i class="fa fa-tags"></i>
         <span class="tags-meta">
             
-            <a class="tag-none-link" href="/tags/LeetCode/" rel="tag">LeetCode</a>
+            <a class="tag-none-link" href="/tags/Leetcode/" rel="tag">Leetcode</a>
             
         </span>
     </span>
@@ -190,20 +193,23 @@ var _hmt = _hmt || [];
         
         <p class="fa fa-exclamation-triangle warning">
             本文于<strong>
-                378</strong>
+                382</strong>
             天之前发表，文中内容可能已经过时。
         </p>
         
     </div>
     
     <div class="post-body post-content">
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>Given an encoded string, return it’s decoded string.</p>
+        <p>难度: 中等(Medium)</p>
+<span id="more"></span>
+
+<h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>Given an encoded string, return it’s decoded string.</p>
 <p>The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.</p>
 <p>You may assume that the input string is always valid; No extra white spaces, square brackets are well-formed, etc.</p>
 <p>Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there won’t be input like 3a or 2[4].</p>
 <p>Examples:</p>
 <p>s &#x3D; “3[a]2[bc]”, return “aaabcbc”.<br>s &#x3D; “3[a2[c]]”, return “accaccacc”.<br>s &#x3D; “2[abc]3[cd]ef”, return “abcabccdcdcdef”.</p>
-<span id="more"></span>
+<!--more-->
 
 <h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decodeString</span>(<span class="params">self, s</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        stack = []</span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> i &lt; <span class="built_in">len</span>(s):</span><br><span class="line">            <span class="keyword">if</span> s[i] == <span class="string">&#x27;]&#x27;</span>:</span><br><span class="line">                ll = []</span><br><span class="line">                t = stack.pop()</span><br><span class="line">                <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                    <span class="keyword">if</span> t.isdigit():</span><br><span class="line">                        stack.append(<span class="string">&#x27;&#x27;</span>.join(ll * <span class="built_in">int</span>(t)))</span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">                    <span class="keyword">elif</span> t == <span class="string">&#x27;[&#x27;</span>:</span><br><span class="line">                        <span class="keyword">pass</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        ll.insert(<span class="number">0</span>, t)</span><br><span class="line">                    t = stack.pop()</span><br><span class="line">            <span class="keyword">elif</span> s[i].isdigit():</span><br><span class="line">                ll = []</span><br><span class="line">                <span class="keyword">while</span> s[i].isdigit():</span><br><span class="line">                    ll.append(s[i])</span><br><span class="line">                    i += <span class="number">1</span></span><br><span class="line">                stack.append(<span class="string">&#x27;&#x27;</span>.join(ll))</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                stack.append(s[i])</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join(stack)</span><br></pre></td></tr></table></figure>
     </div>
@@ -219,10 +225,10 @@ var _hmt = _hmt || [];
 </article>
 <div class="article-nav prev-next-wrap clearfix">
     
-    <a href="/2021/02/01/leetcode/142/" class="pre-post btn btn-default" title='【LeetCode 142】Linked List Cycle II'>
+    <a href="/2021/02/01/leetcode/142/" class="pre-post btn btn-default" title='【Leetcode 142】Linked List Cycle II'>
         <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
         <span class="hidden-xs">
-            【LeetCode 142】Linked List Cycle II</span>
+            【Leetcode 142】Linked List Cycle II</span>
     </a>
     
     
@@ -284,7 +290,7 @@ var _hmt = _hmt || [];
             </div>
             <div class="col-sm-12">
                 <span>Copyright &copy;
-                    2017
+                    2022
                     
                 </span> |
                 <span>

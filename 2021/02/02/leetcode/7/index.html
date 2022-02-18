@@ -19,10 +19,13 @@
     <link rel="dns-prefetch" href="http://example.com">
     <!--SEO-->
 
-<meta name="keywords" content="LeetCode" />
+<meta name="keywords" content="Leetcode" />
 
 
-<meta name="description" content="题目Reverse digits of an integer.Example1: x &#x3D; 123, return 321Example2: x &#x3D; -123, return ..." />
+<meta name="description" content="难度: 中等(Medium)
+
+
+题目Reverse digits of an integer.Example1: x &#x3D; 123, return 321Example2: x &#x..." />
 
 
 <meta name="robots" content="all" />
@@ -33,7 +36,7 @@
 
 <title>
     
-    【LeetCode 7】Reverse Integer |
+    【Leetcode 7】Reverse Integer |
     
     代码大全
 </title>
@@ -153,16 +156,16 @@ var _hmt = _hmt || [];
                     <p id="process"></p>
 <article class="post">
     <div class="post-head">
-        <h1 id="【LeetCode 7】Reverse Integer">
+        <h1 id="【Leetcode 7】Reverse Integer">
             
-            【LeetCode 7】Reverse Integer
+            【Leetcode 7】Reverse Integer
             
         </h1>
         <div class="post-meta">
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        
+        <a class="category-link" href="/categories/Leetcode/">Leetcode</a>
     </span>
     
     
@@ -170,7 +173,7 @@ var _hmt = _hmt || [];
         <i class="fa fa-tags"></i>
         <span class="tags-meta">
             
-            <a class="tag-none-link" href="/tags/LeetCode/" rel="tag">LeetCode</a>
+            <a class="tag-none-link" href="/tags/Leetcode/" rel="tag">Leetcode</a>
             
         </span>
     </span>
@@ -189,15 +192,18 @@ var _hmt = _hmt || [];
         
         <p class="fa fa-exclamation-triangle warning">
             本文于<strong>
-                377</strong>
+                381</strong>
             天之前发表，文中内容可能已经过时。
         </p>
         
     </div>
     
     <div class="post-body post-content">
-        <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Reverse digits of an integer.<br>Example1: x &#x3D; 123, return 321<br>Example2: x &#x3D; -123, return -321</p>
+        <p>难度: 中等(Medium)</p>
 <span id="more"></span>
+
+<h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Reverse digits of an integer.<br>Example1: x &#x3D; 123, return 321<br>Example2: x &#x3D; -123, return -321</p>
+<!--more-->
 
 <h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public <span class="built_in">int</span> reverse(<span class="built_in">int</span> x) &#123;</span><br><span class="line">    long <span class="built_in">sum</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">sum</span> = <span class="built_in">sum</span>*<span class="number">10</span> + x%<span class="number">10</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">sum</span>&gt;Integer.MAX_VALUE || <span class="built_in">sum</span>&lt;Integer.MIN_VALUE)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        x /= <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (<span class="built_in">int</span>)<span class="built_in">sum</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
@@ -220,10 +226,10 @@ var _hmt = _hmt || [];
     </a>
     
     
-    <a href="/2021/02/01/leetcode/142/" class="next-post btn btn-default" title='【LeetCode 142】Linked List Cycle II'>
+    <a href="/2021/02/01/leetcode/142/" class="next-post btn btn-default" title='【Leetcode 142】Linked List Cycle II'>
         <span class="hidden-lg">下一篇</span>
         <span class="hidden-xs">
-            【LeetCode 142】Linked List Cycle II</span><i class="fa fa-angle-right fa-fw"></i>
+            【Leetcode 142】Linked List Cycle II</span><i class="fa fa-angle-right fa-fw"></i>
     </a>
     
 </div>
@@ -284,7 +290,7 @@ var _hmt = _hmt || [];
             </div>
             <div class="col-sm-12">
                 <span>Copyright &copy;
-                    2017
+                    2022
                     
                 </span> |
                 <span>

@@ -1,0 +1,382 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <meta name="baidu_union_verify" content="829eadd3aa1567414dea98ccbd64b9cc">
+    <meta name="baidu-site-verification" content="code-PSTQAk02Zp" />
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="代码大全">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.3.0">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://example.com">
+    <!--SEO-->
+
+<meta name="keywords" content="" />
+
+
+<meta name="description" content="datetime模块是用于处理日期和时间的类，可以便捷进行格式化输出的同时还可以进行数学运算。datetime类同时包含日期和时间。
+
+
+
+
+获取当前时间123456from datetime ..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    Python日期操作 |
+    
+    代码大全
+</title>
+
+<link rel="alternate" href="/atom.xml" title="代码大全" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?dbdccba1bc673abc74a2e4bd0ae1a254";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+    
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='zhangzhongzheng'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://example.com">
+                        代码大全</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/其它/"><i class="fa "></i>
+                                其它</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Python日期操作">
+            
+            Python日期操作
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Python/">Python</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2022/02/27</span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>datetime模块是用于处理日期和时间的类，可以便捷进行格式化输出的同时还可以进行数学运算。datetime类同时包含日期和时间。</p>
+<span id="more"></span>
+
+<br>
+
+<h2 id="获取当前时间"><a href="#获取当前时间" class="headerlink" title="获取当前时间"></a>获取当前时间</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">d = datetime.now()</span><br><span class="line"><span class="built_in">print</span>(d)</span><br><span class="line"></span><br><span class="line">结果：datetime.datetime(<span class="number">2022</span>, <span class="number">2</span>, <span class="number">27</span>, <span class="number">9</span>, <span class="number">42</span>, <span class="number">10</span>, <span class="number">991409</span>)</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h2 id="获取年月日"><a href="#获取年月日" class="headerlink" title="获取年月日"></a>获取年月日</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(d.year)</span><br><span class="line"><span class="built_in">print</span>(d.month)</span><br><span class="line"><span class="built_in">print</span>(d.day)</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line"><span class="number">2022</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">27</span></span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h2 id="获取距今x的时间"><a href="#获取距今x的时间" class="headerlink" title="获取距今x的时间"></a>获取距今x的时间</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> timedelta</span><br><span class="line"></span><br><span class="line">d2 = d + timedelta(days=<span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(d2)</span><br><span class="line"></span><br><span class="line">结果：<span class="number">2022</span>-03-02 09:<span class="number">31</span>:<span class="number">51.976488</span></span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h2 id="格式化字符串"><a href="#格式化字符串" class="headerlink" title="格式化字符串"></a>格式化字符串</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(d2.strftime(<span class="string">&#x27;%d/%m/%y&#x27;</span>))</span><br><span class="line"></span><br><span class="line">结果：02/03/<span class="number">22</span></span><br></pre></td></tr></table></figure>
+
+<p>格式说明：</p>
+<ol>
+<li>%d：天</li>
+<li>%m：月</li>
+<li>%Y：年</li>
+<li>%H：小时</li>
+<li>%M：分钟</li>
+<li>%S: 秒</li>
+</ol>
+<br>
+
+<h2 id="字符串解析"><a href="#字符串解析" class="headerlink" title="字符串解析"></a>字符串解析</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d3 = datetime.strptime(<span class="string">&quot;21/11/06 16:30&quot;</span>, <span class="string">&quot;%d/%m/%y %H:%M&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(d3)</span><br><span class="line"></span><br><span class="line">结果：<span class="number">2006</span>-<span class="number">11</span>-<span class="number">21</span> <span class="number">16</span>:<span class="number">30</span>:<span class="number">00</span></span><br></pre></td></tr></table></figure>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+    <a href="/2022/02/27/ml/spark-rf/" class="next-post btn btn-default" title='Spark随机森林遍历模型'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Spark随机森林遍历模型</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+<p>评论系统未开启，无法评论！</p>
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4 sidebar">
+
+    <div class="widget_stick">
+    <div class="stick">
+        <strong>腾讯云优惠活动</strong>
+        <p>
+            <a href="https://curl.qcloud.com/L5NsRHiK" target="_blank">
+                <img src="https://codelibrary-1257157979.cos.ap-nanjing.myqcloud.com/ad/tcent/470x250.jpg">
+            </a>
+        </p>
+        <hr />
+        <h3><i class="fa fa-bullhorn"></i> 腾讯云推广活动</h3>
+        <p>
+            <a style="color:#FF0036" href="https://curl.qcloud.com/L5NsRHiK" target="_blank">
+                【腾讯云】爆款2核2G云服务器首年40元，企业首购最高获赠300元京东卡
+            </a>
+            <a href="https://curl.qcloud.com/AgSrsmOO" target="_blank">
+                【腾讯云】CDN低至3元，短信0.033元/条起，直播/点播/TRTC等套餐包0.7折起
+            </a>
+            <a href="https://curl.qcloud.com/Rwhd3uLh" target="_blank">
+                【腾讯云】云开发CloudBase，一站式高效开发平台，新用户选购低至0元
+            </a>
+        </p>
+    </div>
+</div>
+<style>
+.widget_stick {
+    margin-bottom: 10px;
+}
+
+.widget_stick .stick {
+    display: block;
+    padding: 0 15px 15px;
+    border: 1px solid #eaeaea;
+    background-color: #fff;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+.widget_stick .stick h2 {
+    font-size: 20px;
+    font-weight: normal;
+    margin-top: 14px;
+    color: #FF787E;
+}
+
+.widget_stick .stick p {
+    color: #5f6367;
+    margin-bottom: 0;
+}
+
+.widget_stick .stick p a {
+    display: block;
+    font-size: 13px;
+    color: #00c1de
+}
+
+.widget_stick .stick strong {
+    margin: -1px 0 0 0;
+    display: inline-block;
+    padding: 4px 15px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: normal;
+    background-color: #FF787E;
+}
+
+.widget_stick .stick a img {
+    width: 100%;
+    max-width: 100%;
+}
+
+.widget_stick .stick h3 {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
+}
+</style>
+
+
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4"><span class="toc-text">获取当前时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%B9%B4%E6%9C%88%E6%97%A5"><span class="toc-text">获取年月日</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E8%B7%9D%E4%BB%8Ax%E7%9A%84%E6%97%B6%E9%97%B4"><span class="toc-text">获取距今x的时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">格式化字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%A7%A3%E6%9E%90"><span class="toc-text">字符串解析</span></a></li></ol>
+        
+    </div>
+
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2022
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

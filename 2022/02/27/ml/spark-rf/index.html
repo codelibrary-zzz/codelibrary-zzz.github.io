@@ -1,0 +1,405 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <meta name="baidu_union_verify" content="829eadd3aa1567414dea98ccbd64b9cc">
+    <meta name="baidu-site-verification" content="code-PSTQAk02Zp" />
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="代码大全">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.3.0">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://example.com">
+    <!--SEO-->
+
+<meta name="keywords" content="ML" />
+
+
+<meta name="description" content="树模型有一个重要的优点是可解释性比较好，训练之后遍历结构即可获得相应的规则。
+
+
+
+
+Spark中将其抽象为Node类和Split类，Node类有两个子类型：LeafNode和InternalN..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    Spark随机森林遍历模型 |
+    
+    代码大全
+</title>
+
+<link rel="alternate" href="/atom.xml" title="代码大全" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?dbdccba1bc673abc74a2e4bd0ae1a254";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+    
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='zhangzhongzheng'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://example.com">
+                        代码大全</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/其它/"><i class="fa "></i>
+                                其它</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Spark随机森林遍历模型">
+            
+            Spark随机森林遍历模型
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-none-link" href="/tags/ML/" rel="tag">ML</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2022/02/27</span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>树模型有一个重要的优点是可解释性比较好，训练之后遍历结构即可获得相应的规则。</p>
+<span id="more"></span>
+
+<br>
+
+<p>Spark中将其抽象为Node类和Split类，Node类有两个子类型：LeafNode和InternalNode；Split也有两种子类型：ContinuousSplit和CategoricalSplit。在遍历树的过程中判断当前节点是否是LeafNode，如果是的话就获取其预测值(prediction)以及纯净度(impurity)，如果不是则继续向下遍历。具体的阈值条件可以通过Split中的属性获得。</p>
+<br>
+
+<h1 id="训练模型"><a href="#训练模型" class="headerlink" title="训练模型"></a>训练模型</h1><h2 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.ml.feature.<span class="type">VectorAssembler</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> input = spark.sql(<span class="string">&quot;select id, fe1, fe2, fe3 from table&quot;</span>)</span><br><span class="line"><span class="keyword">val</span> features = input.columns.tail </span><br><span class="line"><span class="keyword">val</span> feMaker = <span class="keyword">new</span> <span class="type">VectorAssembler</span>().setInputCols(features).setOutputCol(<span class="string">&quot;features&quot;</span>)</span><br><span class="line"><span class="keyword">val</span> data = feMaker.transform(input)</span><br><span class="line"><span class="keyword">val</span> <span class="type">Array</span>(train, test) = data.randomSplit(<span class="type">Array</span>(<span class="number">0.9</span>, <span class="number">0.1</span>))</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h2 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.ml.classification.&#123;<span class="type">RandomForestClassificationModel</span>, <span class="type">RandomForestClassifier</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> rf = <span class="keyword">new</span> <span class="type">RandomForestClassifier</span>().setLabelCol(<span class="string">&quot;label&quot;</span>).setFeaturesCol(<span class="string">&quot;features&quot;</span>).setNumTrees(<span class="number">30</span>).setMaxDepth(<span class="number">4</span>)</span><br><span class="line"><span class="keyword">val</span> model: <span class="type">RandomForestClassificationModel</span> = rf.fit(train)</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h2 id="特征重要性"><a href="#特征重要性" class="headerlink" title="特征重要性"></a>特征重要性</h2><p>模型中保存的特征是特征的id，需要将其映射为特征名比较好理解</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> featureInfo = features.zipWithIndex.map(x =&gt; (x._2, x._1)).toMap</span><br><span class="line"><span class="keyword">val</span> featureImportance = model.featureImportances</span><br><span class="line"><span class="keyword">val</span> indices = featureImportance.toSparse.indices</span><br><span class="line"><span class="keyword">val</span> scores = featureImportance.toSparse.values</span><br><span class="line"><span class="keyword">val</span> importance = (<span class="number">0</span> until indices.size).map(i =&gt; (featureInfo(indices(i)), scores(i).formatted(<span class="string">&quot;%.4f&quot;</span>))).sortWith(_._2 &gt; _._2)</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h2 id="获取规则"><a href="#获取规则" class="headerlink" title="获取规则"></a>获取规则</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.ml.tree._</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">RuleItem</span>(<span class="params">col: <span class="type">String</span>, op: <span class="type">String</span>, value: <span class="type">String</span></span>)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">RuleExpr</span>(<span class="params">nodes: <span class="type">Array</span>[<span class="type">RuleItem</span>], prediction: <span class="type">Double</span>, impurity: <span class="type">Double</span></span>)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> rules = model.trees.map &#123; x =&gt;</span><br><span class="line">    <span class="keyword">val</span> node: <span class="type">Node</span> = x.rootNode</span><br><span class="line">    visit(node, featureInfo)</span><br><span class="line">&#125;.reduce(_ ++ _)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visit</span></span>(root: <span class="type">Node</span>, <span class="type">FeatureInfo</span>: <span class="type">Map</span>[<span class="type">Int</span>, <span class="type">String</span>]): <span class="type">Array</span>[<span class="type">RuleExpr</span>] = &#123;</span><br><span class="line">    <span class="keyword">val</span> paths = <span class="type">ArrayBuffer</span>[<span class="type">RulePaRuleExprth</span>]()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">visitTree</span></span>(root: <span class="type">Node</span>, path: <span class="type">Array</span>[(<span class="type">String</span>, <span class="type">String</span>, <span class="type">String</span>)]) &#123;</span><br><span class="line">        <span class="keyword">if</span> (root.isInstanceOf[<span class="type">InternalNode</span>]) &#123;</span><br><span class="line">            <span class="keyword">val</span> node = root.asInstanceOf[<span class="type">InternalNode</span>]</span><br><span class="line">            <span class="keyword">if</span> (node.split.isInstanceOf[<span class="type">ContinuousSplit</span>]) &#123;</span><br><span class="line">                <span class="keyword">val</span> split = node.split.asInstanceOf[<span class="type">ContinuousSplit</span>] </span><br><span class="line">                visitTree(node.leftChild, path :+ (featureInfo(split.featureIndex), <span class="string">&quot;&lt;=&quot;</span>, split.threshold.toString))</span><br><span class="line">                visitTree(node.rightChild, path :+ (featureInfo(split.featureIndex), <span class="string">&quot;&gt;=&quot;</span>, split.threshold.toString))</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (root.isInstanceOf[<span class="type">LeafNode</span>]) &#123;</span><br><span class="line">            <span class="keyword">val</span> node = root.asInstanceOf[<span class="type">LeafNode</span>]</span><br><span class="line">            paths += <span class="type">RuleExpr</span>(path.map(x =&gt; <span class="type">RuleItem</span>(x._1, x._2, x._3)), node.prediction, node.impurity)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    visit(root, <span class="type">Array</span>.empty[(<span class="type">String</span>, <span class="type">String</span>, <span class="type">String</span>)])</span><br><span class="line">    paths.toArray</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h1 id="Spark源码"><a href="#Spark源码" class="headerlink" title="Spark源码"></a>Spark源码</h1><h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Prediction a leaf node makes, or which an internal node would make if it were a leaf node */</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">prediction</span></span>: <span class="type">Double</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** Impurity measure at this node (for training data) */</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">impurity</span></span>: <span class="type">Double</span></span><br></pre></td></tr></table></figure>
+
+<br>
+
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span>[ml] <span class="class"><span class="keyword">object</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Create a new Node from the old Node format, recursively creating child nodes as needed.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">fromOld</span></span>(oldNode: <span class="type">OldNode</span>, categoricalFeatures: <span class="type">Map</span>[<span class="type">Int</span>, <span class="type">Int</span>]): <span class="type">Node</span> = &#123;</span><br><span class="line">    <span class="keyword">if</span> (oldNode.isLeaf) &#123;</span><br><span class="line">      <span class="comment">// <span class="doctag">TODO:</span> Once the implementation has been moved to this API, then include sufficient</span></span><br><span class="line">      <span class="comment">//       statistics here.</span></span><br><span class="line">      <span class="keyword">new</span> <span class="type">LeafNode</span>(prediction = oldNode.predict.predict,</span><br><span class="line">        impurity = oldNode.impurity, impurityStats = <span class="literal">null</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">val</span> gain = <span class="keyword">if</span> (oldNode.stats.nonEmpty) &#123;</span><br><span class="line">        oldNode.stats.get.gain</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="number">0.0</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">new</span> <span class="type">InternalNode</span>(prediction = oldNode.predict.predict, impurity = oldNode.impurity,</span><br><span class="line">        gain = gain, leftChild = fromOld(oldNode.leftNode.get, categoricalFeatures),</span><br><span class="line">        rightChild = fromOld(oldNode.rightNode.get, categoricalFeatures),</span><br><span class="line">        split = <span class="type">Split</span>.fromOld(oldNode.split.get, categoricalFeatures), impurityStats = <span class="literal">null</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h3 id="LeafNode"><a href="#LeafNode" class="headerlink" title="LeafNode"></a>LeafNode</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Decision tree leaf node.</span></span><br><span class="line"><span class="comment"> * @param prediction  Prediction this node makes</span></span><br><span class="line"><span class="comment"> * @param impurity  Impurity measure at this node (for training data)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">LeafNode</span> <span class="title">private</span>[ml] (<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="class">    override val prediction: <span class="type">Double</span>,</span></span></span><br><span class="line"><span class="params"><span class="class">    override val impurity: <span class="type">Double</span></span>) <span class="keyword">extends</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">toString</span></span>: <span class="type">String</span> = <span class="string">s&quot;LeafNode(prediction = <span class="subst">$prediction</span>, impurity = <span class="subst">$impurity</span>)&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="keyword">private</span>[ml] <span class="function"><span class="keyword">def</span> <span class="title">predict</span></span>(features: <span class="type">Vector</span>): <span class="type">Double</span> = prediction</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="keyword">private</span>[tree] <span class="function"><span class="keyword">def</span> <span class="title">numDescendants</span></span>: <span class="type">Int</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="keyword">private</span>[tree] <span class="function"><span class="keyword">def</span> <span class="title">subtreeToString</span></span>(indentFactor: <span class="type">Int</span> = <span class="number">0</span>): <span class="type">String</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> prefix: <span class="type">String</span> = <span class="string">&quot; &quot;</span> * indentFactor</span><br><span class="line">    prefix + <span class="string">s&quot;Predict: <span class="subst">$prediction</span>\n&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="keyword">private</span>[tree] <span class="function"><span class="keyword">def</span> <span class="title">subtreeDepth</span></span>: <span class="type">Int</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="keyword">private</span>[ml] <span class="function"><span class="keyword">def</span> <span class="title">toOld</span></span>(id: <span class="type">Int</span>): <span class="type">OldNode</span> = &#123;</span><br><span class="line">    <span class="comment">// <span class="doctag">NOTE:</span> We do NOT store &#x27;prob&#x27; in the new API currently.</span></span><br><span class="line">    <span class="keyword">new</span> <span class="type">OldNode</span>(id, <span class="keyword">new</span> <span class="type">OldPredict</span>(prediction, prob = <span class="number">0.0</span>), impurity, isLeaf = <span class="literal">true</span>,</span><br><span class="line">      <span class="type">None</span>, <span class="type">None</span>, <span class="type">None</span>, <span class="type">None</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h3 id="InternalNode"><a href="#InternalNode" class="headerlink" title="InternalNode"></a>InternalNode</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">object</span> <span class="title">InternalNode</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Helper method for [[Node.subtreeToString()]].</span></span><br><span class="line"><span class="comment">   * @param split  Split to print</span></span><br><span class="line"><span class="comment">   * @param left  Indicates whether this is the part of the split going to the left, or that going to the right.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">private</span> <span class="function"><span class="keyword">def</span> <span class="title">splitToString</span></span>(split: <span class="type">Split</span>, left: <span class="type">Boolean</span>): <span class="type">String</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> featureStr = <span class="string">s&quot;feature <span class="subst">$&#123;split.featureIndex&#125;</span>&quot;</span></span><br><span class="line">    split <span class="keyword">match</span> &#123;</span><br><span class="line">      <span class="keyword">case</span> contSplit: <span class="type">ContinuousSplit</span> =&gt;</span><br><span class="line">        <span class="keyword">if</span> (left) &#123;</span><br><span class="line">          <span class="string">s&quot;<span class="subst">$featureStr</span> &lt;= <span class="subst">$&#123;contSplit.threshold&#125;</span>&quot;</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="string">s&quot;<span class="subst">$featureStr</span> &gt; <span class="subst">$&#123;contSplit.threshold&#125;</span>&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      <span class="keyword">case</span> catSplit: <span class="type">CategoricalSplit</span> =&gt;</span><br><span class="line">        <span class="keyword">val</span> categoriesStr = catSplit.leftCategories.mkString(<span class="string">&quot;&#123;&quot;</span>, <span class="string">&quot;,&quot;</span>, <span class="string">&quot;&#125;&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> (left) &#123;</span><br><span class="line">          <span class="string">s&quot;<span class="subst">$featureStr</span> in <span class="subst">$categoriesStr</span>&quot;</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="string">s&quot;<span class="subst">$featureStr</span> not in <span class="subst">$categoriesStr</span>&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h2 id="Split"><a href="#Split" class="headerlink" title="Split"></a>Split</h2><h3 id="ContinuousSplit"><a href="#ContinuousSplit" class="headerlink" title="ContinuousSplit"></a>ContinuousSplit</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Split which tests a categorical feature.</span></span><br><span class="line"><span class="comment"> * @param featureIndex  Index of the feature to test</span></span><br><span class="line"><span class="comment"> * @param _leftCategories  If the feature value is in this set of categories, then the split goes left. Otherwise, it goes right.</span></span><br><span class="line"><span class="comment"> * @param numCategories  Number of categories for this feature.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">CategoricalSplit</span> <span class="title">private</span>[ml] (<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="class">    override val featureIndex: <span class="type">Int</span>,</span></span></span><br><span class="line"><span class="params"><span class="class">    _leftCategories: <span class="type">Array</span>[<span class="type">Double</span>],</span></span></span><br><span class="line"><span class="params"><span class="class">    private val numCategories: <span class="type">Int</span></span>)</span></span><br><span class="line">  <span class="keyword">extends</span> <span class="type">Split</span> &#123;</span><br><span class="line"></span><br><span class="line">  require(_leftCategories.forall(cat =&gt; <span class="number">0</span> &lt;= cat &amp;&amp; cat &lt; numCategories), <span class="string">&quot;Invalid leftCategories&quot;</span> +</span><br><span class="line">    <span class="string">s&quot; (should be in range [0, <span class="subst">$numCategories</span>)): <span class="subst">$&#123;_leftCategories.mkString(&quot;,&quot;)&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * If true, then &quot;categories&quot; is the set of categories for splitting to the left, and vice versa.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">val</span> isLeft: <span class="type">Boolean</span> = _leftCategories.length &lt;= numCategories / <span class="number">2</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Set of categories determining the splitting rule, along with [[isLeft]]. */</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">val</span> categories: <span class="type">Set</span>[<span class="type">Double</span>] = &#123;</span><br><span class="line">    <span class="keyword">if</span> (isLeft) &#123;</span><br><span class="line">      _leftCategories.toSet</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      setComplement(_leftCategories.toSet)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="keyword">private</span>[ml] <span class="function"><span class="keyword">def</span> <span class="title">shouldGoLeft</span></span>(features: <span class="type">Vector</span>): <span class="type">Boolean</span> = &#123;</span><br><span class="line">    <span class="keyword">if</span> (isLeft) &#123;</span><br><span class="line">      categories.contains(features(featureIndex))</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      !categories.contains(features(featureIndex))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">equals</span></span>(o: <span class="type">Any</span>): <span class="type">Boolean</span> = &#123;</span><br><span class="line">    o <span class="keyword">match</span> &#123;</span><br><span class="line">      <span class="keyword">case</span> other: <span class="type">CategoricalSplit</span> =&gt; featureIndex == other.featureIndex &amp;&amp;</span><br><span class="line">        isLeft == other.isLeft &amp;&amp; categories == other.categories</span><br><span class="line">      <span class="keyword">case</span> _ =&gt; <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="keyword">private</span>[tree] <span class="function"><span class="keyword">def</span> <span class="title">toOld</span></span>: <span class="type">OldSplit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> oldCats = <span class="keyword">if</span> (isLeft) &#123;</span><br><span class="line">      categories</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      setComplement(categories)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">OldSplit</span>(featureIndex, threshold = <span class="number">0.0</span>, <span class="type">OldFeatureType</span>.<span class="type">Categorical</span>, oldCats.toList)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Get sorted categories which split to the left */</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">leftCategories</span></span>: <span class="type">Array</span>[<span class="type">Double</span>] = &#123;</span><br><span class="line">    <span class="keyword">val</span> cats = <span class="keyword">if</span> (isLeft) categories <span class="keyword">else</span> setComplement(categories)</span><br><span class="line">    cats.toArray.sorted</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Get sorted categories which split to the right */</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">rightCategories</span></span>: <span class="type">Array</span>[<span class="type">Double</span>] = &#123;</span><br><span class="line">    <span class="keyword">val</span> cats = <span class="keyword">if</span> (isLeft) setComplement(categories) <span class="keyword">else</span> categories</span><br><span class="line">    cats.toArray.sorted</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** [0, numCategories) \ cats */</span></span><br><span class="line">  <span class="keyword">private</span> <span class="function"><span class="keyword">def</span> <span class="title">setComplement</span></span>(cats: <span class="type">Set</span>[<span class="type">Double</span>]): <span class="type">Set</span>[<span class="type">Double</span>] = &#123;</span><br><span class="line">    <span class="type">Range</span>(<span class="number">0</span>, numCategories).map(_.toDouble).filter(cat =&gt; !cats.contains(cat)).toSet</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h3 id="CategoricalSplit"><a href="#CategoricalSplit" class="headerlink" title="CategoricalSplit"></a>CategoricalSplit</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Split which tests a continuous feature.</span></span><br><span class="line"><span class="comment"> * @param featureIndex  Index of the feature to test</span></span><br><span class="line"><span class="comment"> * @param threshold  If the feature value is &lt;= this threshold, then the split goes left. Otherwise, it goes right.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">ContinuousSplit</span> <span class="title">private</span>[ml] (<span class="params">override val featureIndex: <span class="type">Int</span>, val threshold: <span class="type">Double</span></span>)</span></span><br><span class="line">  <span class="keyword">extends</span> <span class="type">Split</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="keyword">private</span>[ml] <span class="function"><span class="keyword">def</span> <span class="title">shouldGoLeft</span></span>(features: <span class="type">Vector</span>): <span class="type">Boolean</span> = &#123;</span><br><span class="line">    features(featureIndex) &lt;= threshold</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">equals</span></span>(o: <span class="type">Any</span>): <span class="type">Boolean</span> = &#123;</span><br><span class="line">    o <span class="keyword">match</span> &#123;</span><br><span class="line">      <span class="keyword">case</span> other: <span class="type">ContinuousSplit</span> =&gt;</span><br><span class="line">        featureIndex == other.featureIndex &amp;&amp; threshold == other.threshold</span><br><span class="line">      <span class="keyword">case</span> _ =&gt;</span><br><span class="line">        <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="keyword">private</span>[tree] <span class="function"><span class="keyword">def</span> <span class="title">toOld</span></span>: <span class="type">OldSplit</span> = &#123;</span><br><span class="line">    <span class="type">OldSplit</span>(featureIndex, threshold, <span class="type">OldFeatureType</span>.<span class="type">Continuous</span>, <span class="type">List</span>.empty[<span class="type">Double</span>])</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2022/02/27/python/datetime/" class="pre-post btn btn-default" title='Python日期操作'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Python日期操作</span>
+    </a>
+    
+    
+    <a href="/2022/02/20/ml/catboost/" class="next-post btn btn-default" title='Catboost'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Catboost</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+<p>评论系统未开启，无法评论！</p>
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4 sidebar">
+
+    <div class="widget_stick">
+    <div class="stick">
+        <strong>腾讯云优惠活动</strong>
+        <p>
+            <a href="https://curl.qcloud.com/L5NsRHiK" target="_blank">
+                <img src="https://codelibrary-1257157979.cos.ap-nanjing.myqcloud.com/ad/tcent/470x250.jpg">
+            </a>
+        </p>
+        <hr />
+        <h3><i class="fa fa-bullhorn"></i> 腾讯云推广活动</h3>
+        <p>
+            <a style="color:#FF0036" href="https://curl.qcloud.com/L5NsRHiK" target="_blank">
+                【腾讯云】爆款2核2G云服务器首年40元，企业首购最高获赠300元京东卡
+            </a>
+            <a href="https://curl.qcloud.com/AgSrsmOO" target="_blank">
+                【腾讯云】CDN低至3元，短信0.033元/条起，直播/点播/TRTC等套餐包0.7折起
+            </a>
+            <a href="https://curl.qcloud.com/Rwhd3uLh" target="_blank">
+                【腾讯云】云开发CloudBase，一站式高效开发平台，新用户选购低至0元
+            </a>
+        </p>
+    </div>
+</div>
+<style>
+.widget_stick {
+    margin-bottom: 10px;
+}
+
+.widget_stick .stick {
+    display: block;
+    padding: 0 15px 15px;
+    border: 1px solid #eaeaea;
+    background-color: #fff;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+.widget_stick .stick h2 {
+    font-size: 20px;
+    font-weight: normal;
+    margin-top: 14px;
+    color: #FF787E;
+}
+
+.widget_stick .stick p {
+    color: #5f6367;
+    margin-bottom: 0;
+}
+
+.widget_stick .stick p a {
+    display: block;
+    font-size: 13px;
+    color: #00c1de
+}
+
+.widget_stick .stick strong {
+    margin: -1px 0 0 0;
+    display: inline-block;
+    padding: 4px 15px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: normal;
+    background-color: #FF787E;
+}
+
+.widget_stick .stick a img {
+    width: 100%;
+    max-width: 100%;
+}
+
+.widget_stick .stick h3 {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
+}
+</style>
+
+
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B"><span class="toc-text">训练模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="toc-text">数据处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="toc-text">模型训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E9%87%8D%E8%A6%81%E6%80%A7"><span class="toc-text">特征重要性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E8%A7%84%E5%88%99"><span class="toc-text">获取规则</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spark%E6%BA%90%E7%A0%81"><span class="toc-text">Spark源码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Node"><span class="toc-text">Node</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LeafNode"><span class="toc-text">LeafNode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#InternalNode"><span class="toc-text">InternalNode</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Split"><span class="toc-text">Split</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ContinuousSplit"><span class="toc-text">ContinuousSplit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CategoricalSplit"><span class="toc-text">CategoricalSplit</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2022
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>
